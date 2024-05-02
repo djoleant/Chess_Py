@@ -1,7 +1,6 @@
 # Imports
 from Piece import *
-from Piece import *
-from Tests import *
+from Files import *
 import os
 
 
@@ -60,57 +59,7 @@ def print_board(board):
         row = ["-" if element is None else element.symbol for element in row]
         print(f"{8-i} |"f" {' '.join(row)}")  # Print row number and elements
     print("")
-    
-def save_board(board, file_path):
-    with open(file_path, 'w') as file:
-        for row in board:
-            line = ' '.join([str(piece) if piece is not None else '-' for piece in row])
-            file.write(line + '\n')
 
-
-
-def open_board(file_path):
-    board = []
-    with open(file_path, 'r') as file:
-        for line in file:
-            row = []
-            for piece in line.strip().split():
-                if piece == '-':
-                    row.append(None)
-                else:
-                    color = BLACK if piece.islower() else WHITE
-                    symbol = piece.lower()
-                    if symbol == 'r':
-                        row.append(Rock(color))
-                    elif symbol == 'n':
-                        row.append(Knight(color))
-                    elif symbol == 'b':
-                        row.append(Bishop(color))
-                    elif symbol == 'q':
-                        row.append(Queen(color))
-                    elif symbol == 'k':
-                        row.append(King(color))
-                    elif symbol == 'p':
-                        row.append(Pawn(color))
-            board.append(row)
-    return board
-
-
-def save_board_to_file(board):
-    file_name = "board_"
-    number = 1
-    while os.path.exists(file_name + str(number)):
-        number += 1
-    file_name += str(number) + ".txt"
-    save_board(board, file_name)
-
-def open_board_from_file():
-    file_name = input("Enter file name: ")
-    if not os.path.exists(file_name):
-        print("File does not exist.")
-        return None
-    return open_board(file_name)
-        
 def play_move(board):
     global check
     global checkmate
