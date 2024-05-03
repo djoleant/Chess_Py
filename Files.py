@@ -79,7 +79,7 @@ def open_board(file_path):
     return board
 
 def save_board_to_file(board):
-    file_name = "board_"
+    file_name = "saves/board_"
     number = 1
     while os.path.exists(file_name + str(number) + ".txt"):
         number += 1
@@ -90,16 +90,16 @@ def save_board_to_file(board):
         if choice.lower() == 'y':
             file_name = existingGame
     
-    save_board(board, file_name)
+    save_board(board, "saves/" + file_name)
 
 
 def open_board_from_file():
     file_name = input("Enter file name: ")
-    if not os.path.exists(file_name):
+    if not os.path.exists("saves/" + file_name):
         print("File does not exist.")
         return None
     
     global existingGame
     existingGame = file_name
     
-    return open_board(file_name)
+    return open_board("saves/" + file_name)
