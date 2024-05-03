@@ -162,6 +162,37 @@ class Bishop(Piece):
         self.symbol = "B" if color == WHITE else "b"
         self.name = "Bishop"
         
+    def valid_direction(self, board, start, end):
+        if board[end[0]][end[1]] is not None and board[end[0]][end[1]].color == self.color:
+            return False
+        
+        if abs(start[0] - end[0]) == abs(start[1] - end[1]):
+            # Check if there are any pieces in between
+            if start[0] < end[0] and start[1] < end[1]:
+                for i in range(1, abs(start[0] - end[0])):
+                    if board[start[0] + i][start[1] + i] is not None:
+                        return False
+            elif start[0] < end[0] and start[1] > end[1]:
+                for i in range(1, abs(start[0] - end[0])):
+                    if board[start[0] + i][start[1] - i] is not None:
+                        return False
+            elif start[0] > end[0] and start[1] < end[1]:
+                for i in range(1, abs(start[0] - end[0])):
+                    if board[start[0] - i][start[1] + i] is not None:
+                        return False
+            elif start[0] > end[0] and start[1] > end[1]:
+                for i in range(1, abs(start[0] - end[0])):
+                    if board[start[0] - i][start[1] - i] is not None:
+                        return False
+            
+            if board[end[0]][end[1]] is None:
+                return (True, None)
+            # Check if the end position has a piece of the opposite color
+            elif board[end[0]][end[1]].color != self.color:
+                return (True, [end[0], end[1]])
+            
+        return False
+        
 class Queen(Piece):
     def __init__(self, color):
         super().__init__(color)
