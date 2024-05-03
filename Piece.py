@@ -16,6 +16,7 @@ class Piece:
     def __str__(self):
         return self.symbol
     
+    # TODO: out of board check ¡¡¡FOR EVERY PIECE!!!
     def valid_direction(self, board, start, end):
         raise NotImplementedError("Subclasses must implement this method")
     
@@ -135,7 +136,26 @@ class Knight(Piece):
         super().__init__(color)
         self.symbol = "N" if color == WHITE else "n"
         self.name = "Knight"
+    
+    def valid_direction(self, board, start, end):
+        if board[end[0]][end[1]] is not None and board[end[0]][end[1]].color == self.color:
+            return False
         
+        if abs(start[0] - end[0]) == 2 and abs(start[1] - end[1]) == 1:
+            if board[end[0]][end[1]] is None:
+                return (True, None)
+            elif board[end[0]][end[1]].color != self.color:
+                return (True, [end[0], end[1]])
+            
+        elif abs(start[0] - end[0]) == 1 and abs(start[1] - end[1]) == 2:
+            if board[end[0]][end[1]] is None:
+                return (True, None)
+            elif board[end[0]][end[1]].color != self.color:
+                return (True, [end[0], end[1]])
+
+        return False
+        
+    
 class Bishop(Piece):
     def __init__(self, color):
         super().__init__(color)
