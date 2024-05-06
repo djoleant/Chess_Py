@@ -199,9 +199,89 @@ class Queen(Piece):
         self.symbol = "Q" if color == WHITE else "q"
         self.name = "Queen"
         
+    def valid_direction(self, board, start, end):
+        if board[end[0]][end[1]] is not None and board[end[0]][end[1]].color == self.color:
+            return False
+        
+        if start[0] == end[0] and start[1] != end[1]:
+            # Determine the direction of the loop
+            if start[1] < end[1]:
+                for j in range(start[1] + 1, end[1]):
+                    if board[start[0]][j] is not None:
+                        return False
+            else:
+                for j in range(start[1] - 1, end[1], -1):
+                    if board[start[0]][j] is not None:
+                        return False
+            
+            if board[end[0]][end[1]] is None:
+                return (True, None)
+            # Check if the end position has a piece of the opposite color
+            elif board[end[0]][end[1]].color != self.color:
+                return (True, [end[0], end[1]])
+            
+        elif start[1] == end[1] and start[0] != end[0]:
+            # Check if there are any pieces in between
+            # Determine the direction of the loop
+            if start[0] < end[0]:
+                # Forward loop (start[0] < end[0])
+                for i in range(start[0] + 1, end[0]):
+                    if board[i][start[1]] is not None:
+                        return False
+            else:
+                # Backward loop (start[0] > end[0])
+                for i in range(start[0] - 1, end[0], -1):
+                    if board[i][start[1]] is not None:
+                        return False
+                    
+            if board[end[0]][end[1]] is None:
+                return (True, None)
+            # Check if the end position has a piece of the opposite color
+            elif board[end[0]][end[1]].color != self.color:
+                return (True, [end[0], end[1]])
+            
+        elif abs(start[0] - end[0]) == abs(start[1] - end[1]):
+            # Check if there are any pieces in between
+            if start[0] < end[0] and start[1] < end[1]:
+                for i in range(1, abs(start[0] - end[0])):
+                    if board[start[0] + i][start[1] + i] is not None:
+                        return False
+            elif start[0] < end[0] and start[1] > end[1]:
+                for i in range(1, abs(start[0] - end[0])):
+                    if board[start[0] + i][start[1] - i] is not None:
+                        return False
+            elif start[0] > end[0] and start[1] < end[1]:
+                for i in range(1, abs(start[0] - end[0])):
+                    if board[start[0] - i][start[1] + i] is not None:
+                        return False
+                    
+            elif start[0] > end[0] and start[1] > end[1]:
+                for i in range(1, abs(start[0] - end[0])):
+                    if board[start[0] - i][start[1] - i] is not None:
+                        return False
+                    
+            if board[end[0]][end[1]] is None:
+                return (True, None)
+            # Check if the end position has a piece of the opposite color
+            elif board[end[0]][end[1]].color != self.color:
+                return (True, [end[0], end[1]])
+        
 class King(Piece):
     def __init__(self, color):
         super().__init__(color)
         self.symbol = "K" if color == WHITE else "k"
         self.name = "King"
+        
+    def valid_direction(self, board, start, end):
+        # TODO: condition that next move is not "check"
+        if board[end[0]][end[1]] is not None and board[end[0]][end[1]].color == self.color:
+            return False
+        
+        if abs(start[0] - end[0]) <= 1 and abs(start[1] - end[1]) <= 1:
+            if board[end[0]][end[1]] is None:
+                return (True, None)
+            elif board[end[0]][end[1]].color != self.color:
+                return (True, [end[0], end[1]])
+            
+        return False
         

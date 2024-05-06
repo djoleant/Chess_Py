@@ -13,7 +13,10 @@ mappingABC = {'a': 0, 'b': 1, 'c': 2, 'd': 3, 'e': 4, 'f': 5, 'g': 6, 'h': 7}
 # Global variables
 existingGame = None # Name of the file of the current game if opened from a file
 
+# Functions
+
 def save_board(board, file_path):
+    # TODO: add SAVING the context like eaten pieces, check, checkmate, next player, etc.
     with open(file_path, 'w') as file:
         for row in board:
             line = ' '.join([str(piece) if piece is not None else '-' for piece in row])
@@ -53,6 +56,7 @@ def open_board(file_path):
             [Rock(WHITE), Knight(WHITE), Bishop(WHITE), Queen(WHITE), King(WHITE), Bishop(WHITE), Knight(WHITE), Rock(WHITE)]
         ]
     """
+    # TODO: add LOADING the context like eaten pieces, check, checkmate, next player, etc.
     board = []
     with open(file_path, 'r') as file:
         for line in file:

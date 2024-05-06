@@ -83,6 +83,9 @@ def play_move(board):
             end[1]=mappingABC[end[1]]
             
             piece = board[start[0]][start[1]]
+            
+            
+            
             if piece is None:
                 print("No piece at start position")
                 done = False
@@ -92,6 +95,9 @@ def play_move(board):
             elif not piece.valid_direction(board, start, end):
                 print("Invalid move")
                 done = False
+                
+            # TODO: IF IT WAS "CHECK" it may not be anymore, also reseting CHECK to FALSE
+            
             else:
                 _, capture = piece.valid_direction(board, start, end)
                 print ("Capture: ", capture)
